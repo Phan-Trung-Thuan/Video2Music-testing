@@ -8,7 +8,6 @@
     def get_frame_list(video_filepath, step=1) -> Generator[np.array]
 '''
 
-
 '''
 ================================================================================================
 This function is used to download Youtube video from video's id
@@ -60,7 +59,7 @@ Return: List[(str, str)] # (index, video_id)
 '''
 def get_id_list(idlist_path='idlist.txt'):
     ans = []
-    with open(idlist_path, 'r') as fi:
+    with open(idlist_path, 'r', encoding='utf-8') as fi:
         lines = fi.readlines()
 
     for line in lines[:10]:
