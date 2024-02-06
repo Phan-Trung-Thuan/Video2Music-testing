@@ -50,6 +50,7 @@ Parameter:
 Return: Generator of frames
 '''
 import cv2
+import math
 
 def get_frame_list(video_filepath, step=1):
     # Open the video file
@@ -71,7 +72,7 @@ def get_frame_list(video_filepath, step=1):
         frame_count += 1
         
         # Check if it's time to save the frame (e.g., every second)
-        if frame_count % int(fps * step) == 0:
+        if frame_count % math.ceil(fps * step) == 0:
             yield frame
             
     # Release the video capture object
