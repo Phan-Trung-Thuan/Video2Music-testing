@@ -51,9 +51,9 @@ Return: Generator of frames
 '''
 import cv2
 
-def get_frame_list(video_filename, step=1):
+def get_frame_list(video_filepath, step=1):
     # Open the video file
-    cap = cv2.VideoCapture(video_filename)
+    cap = cv2.VideoCapture(video_filepath)
 
     # Get the frame rate of the video
     fps = cap.get(cv2.CAP_PROP_FPS)
