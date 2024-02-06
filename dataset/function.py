@@ -16,13 +16,15 @@ def download_youtube_video(video_id, save_path=None, new_filename=None):
         yt = YouTube(video_url)
         stream = yt.streams.get_highest_resolution()
 
+        # Get current path if save path is not provided
         if not save_path:
             save_path = os.getcwd()
 
+        # Download the video
         download_path = stream.download(output_path=save_path)
         print(f'Download {video_url} completed')
         
-        # Rename the downloaded file if a new filename is provided
+        # Rename if a new filename is provided
         if new_filename:
             new_file_path = os.path.join(save_path, new_filename)
             os.rename(download_path, new_file_path)
@@ -43,24 +45,21 @@ Example usage:
 ================================================================================================
 This function is used get the frame list of the video each time step
 Parameter:
-    video_path: video path to get the frame
+    video_filename: video file name to get the frame (include path)
     step: the time (second) step to get the frame (default is 1 second)
 Return: Generator of frames
 '''
 import cv2
-import numpy as np
 
-def get_frame_list(video_path, step=1):
+def get_frame_list(video_filename, step=1):
     # Open the video file
-    cap = cv2.VideoCapture('input_video.mp4')
+    cap = cv2.VideoCapture(video_filename)
 
     # Get the frame rate of the video
     fps = cap.get(cv2.CAP_PROP_FPS)
 
-    # Initialize a variable to keep track of the frame count
     frame_count = 0
 
-    # Loop through the video frames
     while True:
         # Read a frame from the video
         ret, frame = cap.read()
@@ -68,25 +67,20 @@ def get_frame_list(video_path, step=1):
         # Check if the frame was read successfully
         if not ret:
             break
-        
-        # Increment the frame count
+
         frame_count += 1
         
-        # Calculate the time in seconds for the current frame
-        time_in_seconds = frame_count / fps
-        
         # Check if it's time to save the frame (e.g., every second)
-        if frame_count % int(fps) == 0:
-            # Save the frame to a file
-            cv2.imwrite(f'frame_{time_in_seconds:.1f}.jpg', frame)
+        if frame_count % int(fps * step) == 0:
+            yield frame
             
     # Release the video capture object
     cap.release()
 '''
 Example usage:
-    video_id = 'kJQP7kiw5Fk'
-    save_path = '' # Save at current directory
-    new_filename = '001.mp4'  # New filename of the downloaded video
-    download_youtube_video(video_id, save_path, new_filename)
+    video_path = './001.mp4'
+    frames = get_frame_list(video_path, step=0.5)
+    for frame in frames:
+        cv2.imshow(frame)
 ================================================================================================
 '''
