@@ -1,4 +1,15 @@
 '''
+            THIS IS PROTOTYPE
+
+    def download_youtube_video(video_id, save_path=None, new_filename=None) -> None
+
+    def get_id_list(idlist_path='idlist.txt') -> List[(str, str)]
+
+    def get_frame_list(video_filepath, step=1) -> Generator[np.array]
+'''
+
+
+'''
 ================================================================================================
 This function is used to download Youtube video from video's id
 Parameter:
@@ -37,6 +48,30 @@ Example usage:
     save_path = '' # Save at current directory
     new_filename = '001.mp4'  # New filename of the downloaded video
     download_youtube_video(video_id, save_path, new_filename)
+================================================================================================
+'''
+
+'''
+================================================================================================
+This function is used to get video's id
+Parameter:
+    idlist_path: path of file idlist.txt
+Return: List[(str, str)] # (index, video_id)
+'''
+def get_id_list(idlist_path='idlist.txt'):
+    ans = []
+    with open(idlist_path, 'r') as fi:
+        lines = fi.readlines()
+
+    for line in lines[:10]:
+        tmp = line.split('\t')
+        index, id = tmp[0][:3], tmp[1][:-1]
+        ans.append((index, id))
+
+    return ans
+'''
+Example usage:
+    print(get_id_list())
 ================================================================================================
 '''
 
