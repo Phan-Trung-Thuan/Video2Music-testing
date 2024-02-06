@@ -5,6 +5,7 @@ Parameter:
     video_id: id of Youtube video
     save_path: path to save the video (default is current directory)
     new_filename: name of the downloaded video (default is the name that Youtube provide)
+Return: None
 '''
 import os
 from pytube import YouTube
@@ -28,6 +29,59 @@ def download_youtube_video(video_id, save_path=None, new_filename=None):
 
     except Exception as e:
         print(f'An error occurred: {e}, video url: {video_url}')
+'''
+Example usage:
+    video_id = 'kJQP7kiw5Fk'
+    save_path = '' # Save at current directory
+    new_filename = '001.mp4'  # New filename of the downloaded video
+    download_youtube_video(video_id, save_path, new_filename)
+================================================================================================
+'''
+
+
+'''
+================================================================================================
+This function is used get the frame list of the video each time step
+Parameter:
+    video_path: video path to get the frame
+    step: the time (second) step to get the frame (default is 1 second)
+Return: Generator of frames
+'''
+import cv2
+import numpy as np
+
+def get_frame_list(video_path, step=1):
+    # Open the video file
+    cap = cv2.VideoCapture('input_video.mp4')
+
+    # Get the frame rate of the video
+    fps = cap.get(cv2.CAP_PROP_FPS)
+
+    # Initialize a variable to keep track of the frame count
+    frame_count = 0
+
+    # Loop through the video frames
+    while True:
+        # Read a frame from the video
+        ret, frame = cap.read()
+        
+        # Check if the frame was read successfully
+        if not ret:
+            break
+        
+        # Increment the frame count
+        frame_count += 1
+        
+        # Calculate the time in seconds for the current frame
+        time_in_seconds = frame_count / fps
+        
+        # Check if it's time to save the frame (e.g., every second)
+        if frame_count % int(fps) == 0:
+            # Save the frame to a file
+            cv2.imwrite(f'frame_{time_in_seconds:.1f}.jpg', frame)
+            
+    # Release the video capture object
+    cap.release()
 '''
 Example usage:
     video_id = 'kJQP7kiw5Fk'
