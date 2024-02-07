@@ -4,8 +4,10 @@
 
     def download_youtube_video(video_id, save_path=None, new_filename=None) -> None
     def get_id_list(idlist_path='idlist.txt') -> List[(str, str)]
-    def get_frame_list(video_filepath, step=1) -> Generator[np.array]
+    def get_frame_list(video, step=1) -> List[np.array(shape=(x, y, 3))]
+    def get_video_audio(video_path) -> (VideoFileClip, AudioFileClip)
 '''
+
 
 '''
 ================================================================================================
