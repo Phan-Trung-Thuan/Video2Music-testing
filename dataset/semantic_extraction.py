@@ -4,7 +4,7 @@ import clip
 from PIL import Image
 import numpy as np
 import os
-from function import *
+from dataset.function import *
 
 video_dir_path = './dataset/video'
 semantic_feature_dir_path = './dataset/vevo_semantic'
