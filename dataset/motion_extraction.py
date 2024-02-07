@@ -30,6 +30,7 @@ for index, _ in idList[:1]:
         for i in range(1, num_frames):
             # Calculate absolute difference between 2 adjacent frames
             abs_diff = np.abs(frames[i] - frames[i - 1])
+            # Calculate average of entire abs_diff for both 3 channel
             motion_values[i] = np.average(abs_diff)
 
         # Save motion values

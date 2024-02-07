@@ -72,10 +72,10 @@ Parameter:
     step: the time (second) step to get the frame (default is 1 second)
 Return: List of frames by step
 '''
-import cv2
+from moviepy.editor import VideoFileClip
 import math
 
-def get_frame_list(video, step=1):
+def get_frame_list(video: VideoFileClip, step=1):
     fps = video.fps
     frames = [frame for frame in video.iter_frames()]
 
