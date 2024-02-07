@@ -1,4 +1,5 @@
 '''
+================================================================================================
             THIS IS PROTOTYPE
 
     def download_youtube_video(video_id, save_path=None, new_filename=None) -> None
@@ -65,49 +66,33 @@ def get_id_list(idlist_path='idlist.txt'):
 ================================================================================================
 This function is used get the frame list of the video each time step
 Parameter:
-    video_path: video file name to get the frame (include path)
+    video: moviepy.video.io.VideoFileClip.VideoFileClip object to get the frame
     step: the time (second) step to get the frame (default is 1 second)
-Return: Generator of frames
+Return: List of frames by step
 '''
 import cv2
 import math
 
-def get_frame_list(video_path, step=1):
-    # Open the video file
-    cap = cv2.VideoCapture(video_path)
+def get_frame_list(video, step=1):
+    fps = video.fps
+    frames = [frame for frame in video.iter_frames()]
 
-    # Get the frame rate of the video
-    fps = cap.get(cv2.CAP_PROP_FPS)
+    if not step:
+        raise ZeroDivisionError('In get_frame_list(video, step), step cannot equal 0')
 
-    frame_count = 0
+    frames_by_step = [frame for index, frame in enumerate(frames) if not index % math.ceil(fps * step)]
 
-    while True:
-        # Read a frame from the video
-        ret, frame = cap.read()
-        
-        # Check if the frame was read successfully
-        if not ret:
-            break
-
-        frame_count += 1
-        
-        # Check if it's time to save the frame (e.g., every second)
-        if frame_count % math.ceil(fps * step) == 0:
-            yield frame
-            
-    # Release the video capture object
-    cap.release()
-
+    return frames_by_step
 
 '''
 ================================================================================================
 This function is used to seperate video and audio from video file
 Parameter:
     video_path: video file name to get video and audio (include path)
-Return: (video_no_sound, audio)
+Return: (VideoFileClip object, AudioFileClip object) both from moviepy
 '''
 from moviepy.editor import VideoFileClip
 
 def get_video_audio(video_path):
     video = VideoFileClip(video_path)
-    return video.without_audio(), video.audio()
+    return video.without_audio(), video.audio
