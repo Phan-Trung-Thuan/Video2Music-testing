@@ -41,7 +41,7 @@ def main():
             semantic_values = np.zeros((num_frames, 768), dtype=np.float32)
             for i in range(num_frames):
                 # Preprocess image
-                image = preprocess(Image.fromarray(frames[i])).unsqueeze(0).to(device)
+                image = preprocess(Image.fromarray(frames[i])).unsqueeze(0).to(DEVICE)
                 # Encode image
                 img_encode = model.encode_image(image)
                 semantic_values[i] = img_encode.detach().numpy()
