@@ -4,7 +4,7 @@ import clip
 from PIL import Image
 import numpy as np
 import os
-from dataset.function import *
+from function import *
 
 video_dir_path = './dataset/video'
 semantic_feature_dir_path = './dataset/vevo_semantic'
@@ -26,6 +26,9 @@ for index, _ in idList[:1]:
 
     # If the video is downloaded and have not extract motion feature then extract it
     if os.path.exists(video_file_path) and not os.path.exists(semantic_feature_file_path):
+        # NOTIFICATION
+        print(f'Processing video {video_file_path}')
+
         # Get video no sound
         video_no_sound, _ = get_video_audio(video_file_path)
         
@@ -33,11 +36,23 @@ for index, _ in idList[:1]:
         frames = get_frame_list(video_no_sound)
         num_frames = len(frames)
 
+        # NOTIFICATION
+        print(f'Extracting semantic feature from video {video_file_path}')
+
         semantic_values = np.zeros((num_frames, 768), dtype=np.float32)
         for i in range(num_frames):
+            # Preprocess image
             image = preprocess(Image.fromarray(frames[i])).unsqueeze(0).to(device)
+            # Encode image
             img_encode = model.encode_image(image)
+            # Save it
             semantic_values[i] = img_encode.detach().numpy()
+        
+        # NOTIFICAITON
+        print(f'Finish extract semantic feature from video {video_file_path}', end=' ')
 
-        # Save motion values
+        # Save semantic values
         np.save(semantic_feature_file_path, semantic_values)
+        
+        # NOTIFICATION
+        print(f'Saved into {semantic_feature_file_path}')

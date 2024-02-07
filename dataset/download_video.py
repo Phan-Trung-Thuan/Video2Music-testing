@@ -1,6 +1,6 @@
 from moviepy.editor import VideoFileClip
 import os
-from dataset.function import *
+from function import *
 
 video_dir_path = './dataset/video'
          
