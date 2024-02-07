@@ -24,6 +24,25 @@ def predict_emotion(frame, model, preprocess):
     probabilities = [value / np.sum(cos_sim) for value in cos_sim]
     return probabilities
 
+def smooth_window(vec, window_size=5):
+    smoothed = []
+    
+    for i in range(len(vec)):
+        # Determine the range of the current window
+        start_index = max(0, i - (window_size // 2))
+        end_index = min(len(vec), i + (window_size // 2) + 1)
+        
+        # Get the frames within the window
+        window = vec[start_index:end_index]
+        
+        # Calculate the average vector across the window frames
+        if window:
+            average_vector = np.mean(window, axis=0)
+            smoothed.append(average_vector)
+    
+    return smoothed
+
+
 def main():
     video_dir_path = './dataset/video'
     emotion_feature_dir_path = './dataset/vevo_emotion'
@@ -63,7 +82,8 @@ def main():
                 emotion_values[i] = predict_emotion(frames[i], model, preprocess)
 
             # Slide a smoothing window through emotion values
-            
+            emotion_values = smooth_window(emotion_values, window_size=5)
+
             # NOTIFICAITON
             print(f'Finish extract emotion feature from video {video_file_path}', end=' ')
 
