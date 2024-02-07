@@ -2,9 +2,7 @@
             THIS IS PROTOTYPE
 
     def download_youtube_video(video_id, save_path=None, new_filename=None) -> None
-
     def get_id_list(idlist_path='idlist.txt') -> List[(str, str)]
-
     def get_frame_list(video_filepath, step=1) -> Generator[np.array]
 '''
 
@@ -41,14 +39,7 @@ def download_youtube_video(video_id, save_path=None, new_filename=None):
 
     except Exception as e:
         print(f'An error occurred: {e}, video url: {video_url}')
-'''
-Example usage:
-    video_id = 'kJQP7kiw5Fk'
-    save_path = '' # Save at current directory
-    new_filename = '001.mp4'  # New filename of the downloaded video
-    download_youtube_video(video_id, save_path, new_filename)
-================================================================================================
-'''
+
 
 '''
 ================================================================================================
@@ -68,27 +59,22 @@ def get_id_list(idlist_path='idlist.txt'):
         ans.append((index, id))
 
     return ans
-'''
-Example usage:
-    print(get_id_list())
-================================================================================================
-'''
 
 
 '''
 ================================================================================================
 This function is used get the frame list of the video each time step
 Parameter:
-    video_filename: video file name to get the frame (include path)
+    video_path: video file name to get the frame (include path)
     step: the time (second) step to get the frame (default is 1 second)
 Return: Generator of frames
 '''
 import cv2
 import math
 
-def get_frame_list(video_filepath, step=1):
+def get_frame_list(video_path, step=1):
     # Open the video file
-    cap = cv2.VideoCapture(video_filepath)
+    cap = cv2.VideoCapture(video_path)
 
     # Get the frame rate of the video
     fps = cap.get(cv2.CAP_PROP_FPS)
@@ -111,11 +97,17 @@ def get_frame_list(video_filepath, step=1):
             
     # Release the video capture object
     cap.release()
+
+
 '''
-Example usage:
-    video_path = './001.mp4'
-    frames = get_frame_list(video_path, step=0.5)
-    for frame in frames:
-        cv2.imshow(frame)
 ================================================================================================
+This function is used to seperate video and audio from video file
+Parameter:
+    video_path: video file name to get video and audio (include path)
+Return: (video_no_sound, audio)
 '''
+from moviepy.editor import VideoFileClip
+
+def get_video_audio(video_path):
+    video = VideoFileClip(video_path)
+    return video.without_audio(), video.audio()
