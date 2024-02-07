@@ -8,6 +8,8 @@
     def get_video_audio(video_path) -> (VideoFileClip, AudioFileClip)
 '''
 
+import torch
+DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 '''
 ================================================================================================
@@ -56,7 +58,7 @@ def get_id_list(idlist_path='idlist.txt'):
     with open(idlist_path, 'r', encoding='utf-8') as fi:
         lines = fi.readlines()
 
-    for line in lines[:10]:
+    for line in lines[:]:
         tmp = line.split('\t')
         index, id = tmp[0][:3], tmp[1][:-1]
         ans.append((index, id))
