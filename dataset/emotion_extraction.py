@@ -8,16 +8,18 @@ from function import *
 
 def predict_emotion(frame, model, preprocess):
     emotions = ['exciting', 'fearful', 'tense', 'sad', 'relaxing', 'neutral']
-    text = clip.tokenize([f'This image represents {emo}' for emo in emotions]).to(DEVICE)
+
+    text = clip.tokenize(emotions).to(DEVICE)
     # Encode text
     text_encode = model.encode_text(text)
 
-    image = preprocess(Image.fromarray(frame)).unsqueeze(0).to(DEVICE)
+    image = preprocess(frame).unsqueeze(0).to(DEVICE)
     # Encode image
     img_encode = model.encode_image(image)
+    print('shape:', img_encode.shape)
 
     # Calculate cosine similarity
-    cos_sim = torch.nn.functional.cosine_similarity(text_encode, img_encode, dim=1)
+    cos_sim = torch.nn.functional.cosine_similarity(text_encode, img_encode)
     cos_sim = cos_sim.cpu().detach().numpy()
 
     # Calculate probabilities of each emotion
