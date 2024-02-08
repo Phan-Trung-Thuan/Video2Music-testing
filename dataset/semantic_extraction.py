@@ -44,7 +44,7 @@ def main():
                 image = preprocess(Image.fromarray(frames[i])).unsqueeze(0).to(DEVICE)
                 # Encode image
                 img_encode = model.encode_image(image)
-                semantic_values[i] = img_encode.detach().numpy()
+                semantic_values[i] = img_encode.cpu().detach().numpy()
             
             # NOTIFICAITON
             print(f'Finish extract semantic feature from video {video_file_path}', end=' ')
