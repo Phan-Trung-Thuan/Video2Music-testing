@@ -8,7 +8,7 @@ from function import *
 
 def predict_emotion(frame, model, preprocess):
     emotions = ['exciting', 'fearful', 'tense', 'sad', 'relaxing', 'neutral']
-    text = clip.tokenize([f'This image represents {emo}' for emo in emotions])
+    text = clip.tokenize([f'This image represents {emo}' for emo in emotions]).to(DEVICE)
     # Encode text
     text_encode = model.encode_text(text)
 
@@ -18,7 +18,7 @@ def predict_emotion(frame, model, preprocess):
 
     # Calculate cosine similarity
     cos_sim = torch.nn.functional.cosine_similarity(text_encode, img_encode, dim=1)
-    cos_sim = cos_sim.detach().numpy()
+    cos_sim = cos_sim.cpu().detach().numpy()
 
     # Calculate probabilities of each emotion
     probabilities = [value / np.sum(cos_sim) for value in cos_sim]
@@ -36,9 +36,8 @@ def smooth_window(vec, window_size=5):
         window = vec[start_index:end_index]
         
         # Calculate the average vector across the window frames
-        if window:
-            average_vector = np.mean(window, axis=0)
-            smoothed.append(average_vector)
+        average_vector = np.mean(window, axis=0)
+        smoothed.append(average_vector)
     
     return smoothed
 
@@ -57,7 +56,7 @@ def main():
     model, preprocess = clip.load('ViT-L/14', device=DEVICE)
 
     # Extract emotion feature for each video downloaded
-    for index, _ in idList[:1]:
+    for index, _ in idList:
         video_file_path = os.path.join(video_dir_path, f'{index}.mp4')
         emotion_feature_file_path = os.path.join(emotion_feature_dir_path, f'{index}_emotion.npy')
 
@@ -77,7 +76,7 @@ def main():
             print(f'Extracting emotion feature from video {video_file_path}')
 
             # Calculate emotions probabilities of each frame
-            emotion_values = np.zeros(num_frames, dtype=np.float32)
+            emotion_values = np.zeros((num_frames, 6), dtype=np.float32)
             for i in range(num_frames):
                 emotion_values[i] = predict_emotion(frames[i], model, preprocess)
 
