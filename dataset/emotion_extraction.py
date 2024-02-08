@@ -13,10 +13,9 @@ def predict_emotion(frame, model, preprocess):
     # Encode text
     text_encode = model.encode_text(text)
 
-    image = preprocess(frame).unsqueeze(0).to(DEVICE)
+    image = preprocess(Image.fromarray(frame)).unsqueeze(0).to(DEVICE)
     # Encode image
     img_encode = model.encode_image(image)
-    print('shape:', img_encode.shape)
 
     # Calculate cosine similarity
     cos_sim = torch.nn.functional.cosine_similarity(text_encode, img_encode)
