@@ -75,18 +75,12 @@ Parameter:
 Return: List of frames by step
 '''
 from moviepy.editor import VideoFileClip
-import math
 
 def get_frame_list(video: VideoFileClip, step=1):
-    fps = video.fps
-    frames = [frame for frame in video.iter_frames()]
-
     if not step:
         raise ZeroDivisionError('In get_frame_list(video, step), step cannot equal 0')
 
-    frames_by_step = [frame for index, frame in enumerate(frames) if not index % math.ceil(fps * step)]
-
-    return frames_by_step
+    return list(video.iter_frames(fps=1/step))
 
 '''
 ================================================================================================
