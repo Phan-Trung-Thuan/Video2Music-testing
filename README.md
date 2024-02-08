@@ -9,3 +9,9 @@ git clone https://github.com/Phan-Trung-Thuan/Video2Music-testing
 cd Video2Music-testing
 pip install -r requirements.txt
 ```
+# Execution
+You can run separately python files for several purposes. Note that some files require GPU for better performance.
+```php
+cd Video2Music-testing
+python <running-file>.py
+```
