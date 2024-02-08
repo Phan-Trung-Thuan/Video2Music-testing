@@ -16,6 +16,6 @@ cd Video2Music-testing
 python <running-file>.py
 ```
 Files that need GPU to execute:
-    emotion_extraction.py
-    semantic_extraction.py
+* emotion_extraction.py
+* semantic_extraction.py
 The rest of python files do not require GPU
