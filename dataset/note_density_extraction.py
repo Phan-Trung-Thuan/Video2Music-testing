@@ -47,8 +47,7 @@ def main():
             print(f'Note density list of {audio_file_path}: {note_density_list}', end='. ')
             print(f'Finish extract note density feature from audio {audio_file_path}')
 
-            # Save note density values
-           
+            # Save note density values           
             with open(note_density_feature_file_path, 'w', encoding = 'utf-8') as f:
                 for i in range(len(note_density_list)):
                   f.write(str(i) + " "+str(note_density_list[i])+"\n")
