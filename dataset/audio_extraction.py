@@ -4,7 +4,7 @@ from function import *
 
 def main():
     video_dir_path = './dataset/video'
-    audio_feature_dir_path = './dataset/audio'
+    audio_feature_dir_path = './dataset/vevo_audio'
 
     # If the directory is not exist then create it
     if not os.path.exists(audio_feature_dir_path):

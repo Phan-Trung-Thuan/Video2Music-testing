@@ -5,7 +5,7 @@ from basic_pitch import ICASSP_2022_MODEL_PATH
 
 
 def main():
-    audio_dir_path = './dataset/audio'
+    audio_dir_path = './dataset/vevo_audio'
     note_density_feature_dir_path = './dataset/vevo_note_density'
 
     # If the directory is not exist then create it
