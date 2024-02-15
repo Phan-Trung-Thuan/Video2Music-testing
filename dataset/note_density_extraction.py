@@ -5,7 +5,7 @@ from basic_pitch import ICASSP_2022_MODEL_PATH
 
 
 def main():
-    audio_dir_path = './dataset/vevo_audio'
+    audio_dir_path = './dataset/vevo_audio/wav'
     note_density_feature_dir_path = './dataset/vevo_note_density'
 
     # If the directory is not exist then create it
@@ -44,7 +44,6 @@ def main():
                 note_density_list.append(note_density)
 
             # NOTIFICATION    
-            print(f'Note density list of {audio_file_path}: {note_density_list}', end='. ')
             print(f'Finish extract note density feature from audio {audio_file_path}')
 
             # Save note density values           
