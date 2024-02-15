@@ -48,11 +48,17 @@ def main():
               loudness = 20 * np.log10(rms / 32767)  # convert to decibels
               normalized_loudness = loudness_to_normalized(loudness)  # convert to 0-1 scale
               normalized_loudness = format(normalized_loudness, ".4f")
-              loudness_per_second.append(normalized_loudness)                 
-          
+              loudness_per_second.append(normalized_loudness)   
+
+          # NOTIFICATION    
+          print(f'Finish extract loundness feature from audio {audio_file_path}')
+    
           with open(loudness_feature_file_path, 'w', encoding = 'utf-8') as f:
               for i in range(0, len(loudness_per_second)):
                   f.write(str(i) + " "+str(loudness_per_second[i])+"\n")
+
+          # NOTIFICATION
+          print(f'Saved into {loudness_feature_file_path}')
 
 if __name__ == "__main__":
     main()
