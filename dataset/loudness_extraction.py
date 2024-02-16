@@ -1,7 +1,4 @@
 import os
-import math
-import pretty_midi
-
 from pydub import AudioSegment
 from pydub.utils import make_chunks
 import numpy as np
@@ -11,15 +8,15 @@ def loudness_to_normalized(loudness):
     return 10 ** (loudness / 20)
 
 def main():
-    directory_vevo_wav = "./dataset/vevo_audio/wav/"
+    audio_dir_path = "./dataset/audio/"
     loudness_feature_dir_path = "./dataset/vevo_loudness/"
     # If the directory is not exist then create it
     if not os.path.exists(loudness_feature_dir_path):
         os.makedirs(loudness_feature_dir_path)
 
-    for filename in sorted(os.listdir(directory_vevo_wav)):    
+    for filename in sorted(os.listdir(audio_dir_path)):    
         fname = filename.split(".")[0]
-        audio_file_path = os.path.join(directory_vevo_wav, filename.replace("lab", "wav"))
+        audio_file_path = os.path.join(audio_dir_path, filename.replace("lab", "wav"))
         loudness_feature_file_path = "./dataset/vevo_loudness/" + fname + ".lab"        
 
         # If the audio is available and have not extract loudness feature then extract it
