@@ -68,19 +68,16 @@ def get_id_list(idlist_path='idlist.txt'):
 
 '''
 ================================================================================================
-This function is used get the frame list of the video each time step
+This function is used get the frame list of the video by fps
 Parameter:
     video: moviepy.video.io.VideoFileClip.VideoFileClip object to get the frame
-    step: the time (second) step to get the frame (default is 1 second)
-Return: List of frames by step
+    fps: the number frames each second (default is 1 frame per second)
+Return: List of frames by fps
 '''
 from moviepy.editor import VideoFileClip
 
-def get_frame_list(video: VideoFileClip, step=1):
-    if not step:
-        raise ZeroDivisionError('In get_frame_list(video, step), step cannot equal 0')
-
-    return list(video.iter_frames(fps=1/step))
+def get_frame_list(video: VideoFileClip, fps=1):
+    return list(video.iter_frames(fps))
 
 '''
 ================================================================================================
