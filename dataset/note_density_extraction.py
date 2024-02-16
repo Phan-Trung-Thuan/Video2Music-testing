@@ -1,11 +1,10 @@
 import os
+import numpy as np
 from function import *
 from basic_pitch.inference import predict
-from basic_pitch import ICASSP_2022_MODEL_PATH
-
 
 def main():
-    audio_dir_path = './dataset/vevo_audio/wav'
+    audio_dir_path = './dataset/audio'
     note_density_feature_dir_path = './dataset/vevo_note_density'
 
     # If the directory is not exist then create it
@@ -16,9 +15,8 @@ def main():
 
     # Extract note density feature for each audio
     for index, _ in idList:
-        
         audio_file_path = os.path.join(audio_dir_path, f'{index}.wav')
-        note_density_feature_file_path = os.path.join(note_density_feature_dir_path, f'{index}_note_density.lab')
+        note_density_feature_file_path = os.path.join(note_density_feature_dir_path, f'{index}_note_density.npy')
 
         # If the audio is available and have not extract note density feature then extract it
         if os.path.exists(audio_file_path) and not os.path.exists(note_density_feature_file_path):
@@ -47,9 +45,8 @@ def main():
             print(f'Finish extract note density feature from audio {audio_file_path}')
 
             # Save note density values           
-            with open(note_density_feature_file_path, 'w', encoding = 'utf-8') as f:
-                for i in range(len(note_density_list)):
-                  f.write(str(i) + " "+str(note_density_list[i])+"\n")
+            note_density_list = np.array(note_density_list)
+            np.save(note_density_feature_file_path, note_density_list)
 
             # NOTIFICATION
             print(f'Saved into {note_density_feature_file_path}')

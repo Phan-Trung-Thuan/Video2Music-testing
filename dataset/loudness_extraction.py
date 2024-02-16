@@ -3,25 +3,29 @@ from pydub import AudioSegment
 from pydub.utils import make_chunks
 import numpy as np
 import audioop
+from function import *
 
 def loudness_to_normalized(loudness):
     return 10 ** (loudness / 20)
 
 def main():
-    audio_dir_path = "./dataset/audio/"
-    loudness_feature_dir_path = "./dataset/vevo_loudness/"
+    audio_dir_path = "./dataset/audio"
+    loudness_feature_dir_path = "./dataset/vevo_loudness"
+
     # If the directory is not exist then create it
     if not os.path.exists(loudness_feature_dir_path):
         os.makedirs(loudness_feature_dir_path)
 
-    for filename in sorted(os.listdir(audio_dir_path)):    
-        audio_file_path = os.path.join(audio_dir_path, filename)
-        loudness_feature_file_path = os.path.join(loudness_feature_dir_path, filename.replace('wav', 'npy'))
+    idList = get_id_list(idlist_path='./dataset/vevo_meta/idlist.txt')
+
+    for index, _ in idList:    
+        audio_file_path = os.path.join(audio_dir_path, f'{index}.wav')
+        loudness_feature_file_path = os.path.join(loudness_feature_dir_path, f'{index}_loudness.npy')
 
         # If the audio is available and have not extract loudness feature then extract it
-        if os.path.exists(audio_dir_path) and not os.path.exists(loudness_feature_file_path):  
+        if os.path.exists(audio_file_path) and not os.path.exists(loudness_feature_file_path):  
             # NOTIFICATION
-            print(f'Processing audio {filename}')
+            print(f'Processing audio {audio_file_path}')
 
             audio_data = AudioSegment.from_file(audio_file_path)
             audio_data = audio_data.set_channels(1)  # convert to mono
