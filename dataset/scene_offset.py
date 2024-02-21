@@ -36,7 +36,7 @@ def scene_offset(video_path):
 
 
 def main():
-    video = scene_offset('dataset/video/001.mp4')
+    video = scene_offset('video/001.mp4')
     for i in range(len(video)):
         print('%d, %d' % (video[i][0], video[i][1]))
 
