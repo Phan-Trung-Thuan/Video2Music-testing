@@ -35,7 +35,6 @@ def scene_offset(video_path):
                 scene_sec += 1
     return scene_offset_list
 
-
 def main():
     idList = get_id_list(idlist_path='./dataset/vevo_meta/idlist.txt')
     scene_offset_path = './dataset/vevo_scene_offset'
