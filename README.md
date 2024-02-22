@@ -10,7 +10,7 @@ cd Video2Music-testing
 pip install -r requirements.txt
 ```
 # Download raw dataset
-This link include more than 700 videos from Youtube used to extract feature
+This link include more than 700 videos from Youtube used to extract feature. After download the videos, you should put it into folder ./dataset/video
 ```php
 wget -O video.zip https://dl.dropboxusercontent.com/scl/fi/vncwcapwott270ru6ibgh/video.zip?rlkey=wjetubrt7d43dj8wtu2arjd7z&dl=0?dl=1
 unzip video.zip
