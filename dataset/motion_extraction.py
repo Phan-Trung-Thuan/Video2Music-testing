@@ -36,7 +36,7 @@ def main():
             motion_values = np.zeros(num_frames, dtype=np.float32)
             for i in range(1, num_frames):
                 # Calculate absolute difference between 2 adjacent frames
-                abs_diff = np.abs(frames[i] - frames[i - 1])
+                abs_diff = np.abs(frames[i].astype(np.float16) - frames[i - 1].astype(np.float16))
                 # Calculate average of entire abs_diff for both 3 channel
                 motion_values[i] = np.average(abs_diff)
             
