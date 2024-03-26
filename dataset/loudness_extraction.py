@@ -1,26 +1,35 @@
 import os
 import math
 import pretty_midi
-
-from pydub import AudioSegment
-from pydub.utils import make_chunks
+import sys
 import numpy as np
 import audioop
+
+from function import *
+from pydub import AudioSegment
+from pydub.utils import make_chunks
 
 def loudness_to_normalized(loudness):
     return 10 ** (loudness / 20)
 
 def main():
-    directory_vevo_wav = "./dataset/vevo_audio/wav/"
+    audio_dir_path = "./dataset/vevo_audio/wav/"
     loudness_feature_dir_path = "./dataset/vevo_loudness/"
+    
     # If the directory is not exist then create it
     if not os.path.exists(loudness_feature_dir_path):
         os.makedirs(loudness_feature_dir_path)
 
-    for filename in sorted(os.listdir(directory_vevo_wav)):    
-        fname = filename.split(".")[0]
-        audio_file_path = os.path.join(directory_vevo_wav, filename.replace("lab", "wav"))
-        loudness_feature_file_path = "./dataset/vevo_loudness/" + fname + ".lab"        
+    idList = get_id_list(idlist_path='./dataset/vevo_meta/idlist.txt')
+
+    for index, _ in idList:   
+        audio_file_path = os.path.join(audio_dir_path, f'{index}.wav')
+        loudness_feature_file_path = os.path.join(loudness_feature_dir_path, f'{index}_loudness.npy')        
+        
+        # If the audio is not available
+        if not os.path.exists(audio_file_path):
+          print(f'Audio {index}.wav not found!')
+          continue;
 
         # If the audio is available and have not extract loudness feature then extract it
         if os.path.exists(audio_file_path) and not os.path.exists(loudness_feature_file_path):  
@@ -43,7 +52,7 @@ def main():
 
               # if RMS = 0, then RMS = 32767 so that loudness = 20 -> normalize_loudness = 1
               if (rms == 0): 
-                rms = 32767
+                rms += sys.float_info.epsilon;
                       
               loudness = 20 * np.log10(rms / 32767)  # convert to decibels
               normalized_loudness = loudness_to_normalized(loudness)  # convert to 0-1 scale
@@ -53,12 +62,12 @@ def main():
           # NOTIFICATION    
           print(f'Finish extract loundness feature from audio {audio_file_path}')
     
-          with open(loudness_feature_file_path, 'w', encoding = 'utf-8') as f:
-              for i in range(0, len(loudness_per_second)):
-                  f.write(str(i) + " "+str(loudness_per_second[i])+"\n")
+          # Save note density values
+          np.save(loudness_feature_file_path, loudness_per_second)
 
           # NOTIFICATION
           print(f'Saved into {loudness_feature_file_path}')
-
+        else:
+          print(f'Loudness feature of {index}.wav exists')
 if __name__ == "__main__":
     main()

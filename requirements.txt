@@ -1,3 +1,6 @@
+audio_extract==0.6.0
+basic-pitch[tf]
+pydub==0.25.1
 torch==2.2.0
 torchvision==0.17.0
 pytube==15.0.0
