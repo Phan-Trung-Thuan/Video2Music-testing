@@ -13,8 +13,8 @@ def loudness_to_normalized(loudness):
     return 10 ** (loudness / 20)
 
 def main():
-    audio_dir_path = "./dataset/audio/wav/"
-    loudness_feature_dir_path = "./dataset/vevo_loudness/"
+    audio_dir_path = "./dataset/audio"
+    loudness_feature_dir_path = "./dataset/vevo_loudness"
 
     # If the directory is not exist then create it
     if not os.path.exists(loudness_feature_dir_path):
